@@ -123,4 +123,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'rate_limit' => [
+        'max_attempts' => env('APP_RATE_LIMIT', 5),
+    ],
 ];

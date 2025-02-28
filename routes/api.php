@@ -5,6 +5,8 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function (Router $router) {
+    $router->get('/ping', fn () => 'pong');
+
     $router->controller(AuthController::class)
         ->prefix('auth')
         ->middleware('api')

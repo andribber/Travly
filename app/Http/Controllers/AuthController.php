@@ -2,68 +2,47 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\JWT\JWT;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
+use Illuminate\Contracts\Auth\Factory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Validator;
 
 class AuthController extends Controller
 {
-    public function register() {
-        $validator = Validator::make(request()->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed|min:8',
-        ]);
-
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }
-
-        $user = new User;
-        $user->name = request()->name;
-        $user->email = request()->email;
-        $user->password = bcrypt(request()->password);
-        $user->save();
-
-        return response()->json($user, 201);
+    public function __construct(private readonly User $user, private readonly Factory $auth, private readonly JWT $jwt)
+    {
     }
 
-    public function login()
+    public function register(RegisterRequest $request): JsonResponse
     {
-        $credentials = request(['email', 'password']);
+        return response()->json(
+            $this->jwt->authenticate($this->user->create($request->validated())),
+            Response::HTTP_CREATED,
+        );
+    }
 
-        if (! $token = auth()->attempt($credentials)) {
+    public function login(LoginRequest $request): JsonResponse
+    {
+        $credentials = $request->validated();
+
+        $user = $this->user->where(['email' => $credentials['email']])->first();
+
+        if (is_null($user) || !$this->auth->validate($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return $this->respondWithToken($token);
+        return response()->json($this->jwt->authenticate($user), Response::HTTP_OK);
     }
-
-    public function me()
-    {
-        return response()->json(auth()->user());
-    }
-
 
     public function logout()
     {
-        auth()->logout();
+        $this->auth->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
-    }
-
-
-    public function refresh()
-    {
-        return $this->respondWithToken(auth()->refresh());
-    }
-
-    protected function respondWithToken($token)
-    {
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
+        return response()->json(Response::HTTP_NO_CONTENT);
     }
 }

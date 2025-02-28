@@ -48,13 +48,16 @@ services:
     restart: always
     container_name: travly-phpMyAdmin
     ports:
-      - 449:449
+      - 8080:80
     depends_on:
       - db
     networks:
       - travly
     environment:
       - PMA_ARBITRARY=1
+      - PMA_HOST=db
+    volumes:
+      - ./environment/phpmyadmin/apache.conf:/etc/apache2/conf-enabled/custom_apache.conf
 
   docs:
     image: swaggerapi/swagger-ui:v5.17.14

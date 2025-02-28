@@ -4,18 +4,25 @@ FROM php:8.4-fpm-alpine3.19
 WORKDIR /var/www
 
 # Copy the current directory contents into the container
-COPY . /var/www
+COPY ../ /var/www
 
 # Install system dependencies
-RUN apk add --no-cache \
-    bash \
+RUN apk update && apk add --no-cache \
+    shadow \
     curl \
-    libpng-dev \
     libzip-dev \
-    zlib-dev
+    zlib-dev \
+    libpng-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    openssl \
+    gnupg \
+    nano \
+    bash
 
 # Install MySQL PDO
-RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install pdo pdo_mysql
 
 # Rename it to php.ini
 RUN mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini \

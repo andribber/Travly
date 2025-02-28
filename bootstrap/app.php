@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpInconsistentReturnPointsInspection */
 
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
@@ -19,6 +19,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Session\TokenMismatchException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ItemNotFoundException;
@@ -37,7 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->booting(function () {
         RateLimiter::for(
             'api',
-            fn(Request $request) => Limit::perMinute(config('app.rate_limit.default'))
+            fn (Request $request) => Limit::perMinute(config('app.rate_limit.max_attempts'))
                 ->by($request->user()?->id ?: $request->ip())
         );
 
@@ -91,16 +92,16 @@ return Application::configure(basePath: dirname(__DIR__))
                 $exception instanceof ModelNotFoundException,
                     $exception instanceof NotFoundHttpException,
                     $exception instanceof ItemNotFoundException => [
-                        Response::HTTP_NOT_FOUND,
-                        Response::$statusTexts[Response::HTTP_NOT_FOUND],
-                        null,
-                    ],
+                    Response::HTTP_NOT_FOUND,
+                    Response::$statusTexts[Response::HTTP_NOT_FOUND],
+                    null,
+                ],
                 $exception instanceof InvalidFilterQuery,
                     $exception instanceof InvalidSortQuery => [
-                        Response::HTTP_BAD_REQUEST,
-                        $exception->getMessage(),
-                        null,
-                    ],
+                    Response::HTTP_BAD_REQUEST,
+                    $exception->getMessage(),
+                    null,
+                ],
                 $exception instanceof MethodNotAllowedHttpException => [
                     Response::HTTP_METHOD_NOT_ALLOWED,
                     Response::$statusTexts[Response::HTTP_METHOD_NOT_ALLOWED],
