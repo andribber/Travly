@@ -1,5 +1,5 @@
 volumes:
-  postgres-data:
+  mysql-data:
     driver: local
   redis-data:
     driver: local
@@ -40,6 +40,8 @@ services:
       MYSQL_USER: travly
       MYSQL_PASSWORD: password
       MYSQL_DATABASE: travlydb
+    volumes:
+      - mysql-data:/var/lib/mysql  #
     networks:
       - travly
 
@@ -69,15 +71,6 @@ services:
     environment:
       SWAGGER_JSON: /tmp/openapi.yml
 
-  mailcatcher:
-    restart: on-failure
-    image: dockage/mailcatcher:0.9.0
-    container_name: travly-mailcatcher
-    ports:
-      - "1080:1080"
-    networks:
-      - travly
-
   redis:
     image: redis:latest
     container_name: travly-redis
@@ -86,6 +79,15 @@ services:
       - redis-data:/data
     ports:
       - 6379:6379
+    networks:
+      - travly
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: 'travly-mailhog'
+    ports:
+      - "1025:1025"
+      - "8025:8025"
     networks:
       - travly
 

@@ -3,21 +3,22 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\WithFaker;
+use Faker\Factory;
+use Illuminate\Database\Seeder;
 
-class UserSeeder
+class UserSeeder extends Seeder
 {
-    use WithFaker;
-
     public function run(): void
     {
+        $faker = Factory::create();
+
         User::factory()->createMany([
             [
-                'name' => $this->faker->name,
+                'name' => $faker->name,
                 'email' => 'a@travly.com',
             ],
             [
-                'name' => $this->faker->name,
+                'name' => $faker->name,
                 'email' => 'b@travly.com',
             ],
         ]);

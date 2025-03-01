@@ -44,7 +44,6 @@ return Application::configure(basePath: dirname(__DIR__))
 
         Route::middleware('api')->group(base_path('routes/api.php'));
     })
-    ->withEvents(false)
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->use([
             TrimStrings::class,

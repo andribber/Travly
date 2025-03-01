@@ -4,7 +4,7 @@ namespace App\Events\Travel;
 
 use App\Models\TravelOrder;
 
-class Updated
+class Creating
 {
     public function __construct(public TravelOrder $travelOrder)
     {

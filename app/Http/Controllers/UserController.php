@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
-use Controller;
+use Illuminate\Routing\Controller;
 use PHPOpenSourceSaver\JWTAuth\Contracts\Providers\Auth;
 
 class UserController extends Controller
@@ -12,7 +12,7 @@ class UserController extends Controller
     {
     }
 
-    public function me()
+    public function me(): UserResource
     {
         return UserResource::make($this->auth->user());
     }
