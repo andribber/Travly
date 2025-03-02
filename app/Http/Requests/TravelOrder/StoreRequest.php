@@ -12,7 +12,7 @@ class StoreRequest extends FormRequest
         return [
             'departure_date' => [
                 'required',
-                'date_format: Y-m-d H:i:s',
+                'date_format:Y-m-d H:i:s',
                 'after:now',
                 Rule::when($this->filled('return_date'), 'before:return_date'),
             ],

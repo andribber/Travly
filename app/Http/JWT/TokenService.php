@@ -11,7 +11,7 @@ class TokenService
         private ?int $ttl = null,
         private readonly bool $refresh = false,
     ) {
-        $this->ttl = is_null($this->ttl) ?: config('jwt.ttl');
+        $this->ttl = is_null($ttl) ? config('jwt.ttl') : $ttl;
     }
 
     public function token(): string

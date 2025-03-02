@@ -10,7 +10,8 @@ class StatusSort implements Sort
 {
     public function __invoke(Builder $query, bool $descending, string $property): Builder
     {
-        return $query->addSelect([DB::raw("FIELD(status, 'Requested', 'Approved', 'Cancelled') AS status_order")])
-            ->orderBy('status', $descending ? 'desc' : 'asc');
+        return $query->addSelect('*')
+            ->addSelect([DB::raw("FIELD(status, 'requested', 'approved', 'cancelled') AS status_order")])
+            ->orderBy('status_order', $descending ? 'desc' : 'asc');
     }
 }

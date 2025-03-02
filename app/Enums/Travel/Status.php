@@ -7,9 +7,9 @@ use ArchTech\Enums\Values;
 enum Status: string
 {
     use Values;
-    case REQUESTED = 'REQUESTED';
-    case APPROVED = 'APPROVED';
-    case CANCELLED = 'CANCELLED';
+    case APPROVED = 'approved';
+    case CANCELLED = 'cancelled';
+    case REQUESTED = 'requested';
 
     public static function validUpdateStatus(): array
     {

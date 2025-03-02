@@ -124,6 +124,6 @@ return [
     ],
 
     'rate_limit' => [
-        'max_attempts' => env('APP_RATE_LIMIT', 5),
+        'max_attempts' => env('APP_RATE_LIMIT', 30),
     ],
 ];

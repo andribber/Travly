@@ -11,14 +11,14 @@ class TravelOrderResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'destiny'=> $this->destiny,
-            'departure_date'=> $this->departure_date,
-            'return_date'=> $this->return_date,
+            'destination'=> $this->destination,
+            'departure_date'=> $this->departure_date->toIso8601String(),
+            'return_date'=> $this->return_date?->toIso8601String(),
             'status'=> $this->status,
             'orderer_name' => $this->user->name,
             'created_at' => $this->created_at->toIso8601String(),
             'updated_at' => $this->updated_at->toIso8601String(),
-            'deleted_at' => $this->deleted_at->toIso8601String(),
+            'deleted_at' => $this->deleted_at?->toIso8601String(),
         ];
     }
 }

@@ -199,8 +199,6 @@ return [
         'country'   => 'país',
         'date'      => 'data',
         'day'       => 'dia',
-        'destination' => 'destino',
-        'departure_at' => 'data de partida',
         'excerpt'   => 'resumo',
         'first_name' => 'primeiro nome',
         'gender'    => 'gênero',
@@ -238,6 +236,5 @@ return [
         'category' => 'categoria',
         'blood_type' => 'tipo sanguíneo',
         'birth_date' => 'data de nascimento',
-        'return_date' => 'data de retorno',
     ],
 ];

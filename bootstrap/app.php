@@ -1,8 +1,9 @@
 <?php /** @noinspection PhpInconsistentReturnPointsInspection */
 
+use App\Http\Middleware\AcceptJson;
+use App\Http\Middleware\AcceptsJson;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Auth\Middleware\RequirePassword;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -19,16 +20,17 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Session\TokenMismatchException;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ItemNotFoundException;
 use Illuminate\Validation\ValidationException;
+use PHPOpenSourceSaver\JWTAuth\Http\Middleware\Authenticate;
 use Spatie\QueryBuilder\Exceptions\InvalidFilterQuery;
 use Spatie\QueryBuilder\Exceptions\InvalidSortQuery;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -53,10 +55,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->group('api', [
             'throttle:api',
             SubstituteBindings::class,
+            AcceptsJson::class
         ]);
 
         $middleware->alias([
-            'auth.basic' => AuthenticateWithBasicAuth::class,
+            'auth' => Authenticate::class,
             'cache.headers' => SetCacheHeaders::class,
             'can' => Authorize::class,
             'password.confirm' => RequirePassword::class,
@@ -73,7 +76,8 @@ return Application::configure(basePath: dirname(__DIR__))
                 ],
                 $exception instanceof AuthenticationException,
                     $exception instanceof TokenMismatchException,
-                    $exception instanceof AccessDeniedHttpException => [
+                    $exception instanceof AccessDeniedHttpException ,
+                    $exception instanceof UnauthorizedHttpException => [
                     Response::HTTP_UNAUTHORIZED,
                     Response::$statusTexts[Response::HTTP_UNAUTHORIZED],
                     null,

@@ -14,7 +14,7 @@ class TravelOrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'destiny' => $this->faker->locale(),
+            'destination' => $this->faker->locale(),
             'departure_date' => now()->addDays(5),
             'return_date' => now()->addDays(10),
             'status' => Status::REQUESTED,
@@ -31,7 +31,7 @@ class TravelOrderFactory extends Factory
     public function approved(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => Status::CANCELLED,
+            'status' => Status::APPROVED,
         ]);
     }
 }
