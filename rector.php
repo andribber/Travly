@@ -11,7 +11,6 @@ use Rector\Php83\Rector\ClassConst\AddTypeToConstRector;
 use Rector\EarlyReturn\Rector\If_\RemoveAlwaysElseRector;
 use Rector\Arguments\Rector\ClassMethod\ArgumentAdderRector;
 use Rector\DeadCode\Rector\FunctionLike\RemoveDeadReturnRector;
-use Rector\Transform\Rector\StaticCall\StaticCallToMethodCallRector;
 use Rector\CodeQuality\Rector\Class_\CompleteDynamicPropertiesRector;
 use Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector;
 use Rector\CodeQuality\Rector\FunctionLike\SimplifyUselessVariableRector;
@@ -45,7 +44,6 @@ return static function (RectorConfig $rectorConfig): void {
         ArgumentAdderRector::class,
         CompleteDynamicPropertiesRector::class,
         IssetOnPropertyObjectToPropertyExistsRector::class,
-        StaticCallToMethodCallRector::class,
         NullToStrictStringFuncCallArgRector::class,
         SimplifyEmptyCheckOnEmptyArrayRector::class,
         AddOverrideAttributeToOverriddenMethodsRector::class,

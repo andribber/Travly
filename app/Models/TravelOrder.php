@@ -14,11 +14,13 @@ class TravelOrder extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'destination',
         'departure_date',
         'return_date',
         'status',
         'user_id',
+        'created_at',
     ];
 
     protected $casts = [
@@ -29,7 +31,7 @@ class TravelOrder extends Model
 
     protected $dispatchesEvents = [
         'creating' => Creating::class,
-        'updated' => Updated::class
+        'updated' => Updated::class,
     ];
 
     public function user(): BelongsTo
@@ -39,7 +41,7 @@ class TravelOrder extends Model
 
     public function canCancel(): bool
     {
-        return $this->status->value === Status::REQUESTED->value && $this->created_at >= now()->subDays(7)
-            || !$this->departure_date >= now()->subDays(3);
+        return ($this->status->value === Status::REQUESTED->value && $this->created_at >= now()->subDays(7))
+            || ($this->status->value === Status::APPROVED->value && $this->departure_date >= now()->addDays(3));
     }
 }

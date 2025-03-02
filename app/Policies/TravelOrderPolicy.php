@@ -24,6 +24,6 @@ class TravelOrderPolicy
 
     public function update(User $user, TravelOrder $travel): bool
     {
-        return !$travel->user()->is($user);
+        return ! $travel->user()->is($user);
     }
 }

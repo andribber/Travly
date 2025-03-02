@@ -10,7 +10,6 @@ use Illuminate\Contracts\Auth\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Validator;
 
 class AuthController extends Controller
 {
@@ -32,7 +31,7 @@ class AuthController extends Controller
 
         $user = $this->user->where(['email' => $credentials['email']])->first();
 
-        if (is_null($user) || !$this->auth->validate($credentials)) {
+        if (is_null($user) || ! $this->auth->validate($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -43,6 +42,6 @@ class AuthController extends Controller
     {
         $this->auth->logout();
 
-        return response()->json(Response::HTTP_NO_CONTENT);
+        return response()->json(status: Response::HTTP_NO_CONTENT);
     }
 }
