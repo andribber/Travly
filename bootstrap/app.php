@@ -1,6 +1,5 @@
 <?php /** @noinspection PhpInconsistentReturnPointsInspection */
 
-use App\Http\Middleware\AcceptJson;
 use App\Http\Middleware\AcceptsJson;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
@@ -24,13 +23,13 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ItemNotFoundException;
 use Illuminate\Validation\ValidationException;
-use PHPOpenSourceSaver\JWTAuth\Http\Middleware\Authenticate;
 use Spatie\QueryBuilder\Exceptions\InvalidFilterQuery;
 use Spatie\QueryBuilder\Exceptions\InvalidSortQuery;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Tymon\JWTAuth\Http\Middleware\Authenticate;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -40,8 +39,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->booting(function () {
         RateLimiter::for(
             'api',
-            fn (Request $request) => Limit::perMinute(config('app.rate_limit.max_attempts'))
-                ->by($request->user()?->id ?: $request->ip())
+            fn (Request $request) => (env('APP_ENV') === 'testing')
+                ? Limit::none()
+                : Limit::perMinute(config('app.rate_limit.max_attempts'))->by($request->user()?->id ?: $request->ip())
         );
 
         Route::middleware('api')->group(base_path('routes/api.php'));

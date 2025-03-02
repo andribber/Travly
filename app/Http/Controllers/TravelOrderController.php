@@ -54,7 +54,7 @@ class TravelOrderController extends Controller
 
         $status = $request->get('status');
 
-        if($status === Status::CANCELLED->value && !$travelOrder->canCancel()) {
+        if ($status === Status::CANCELLED->value && ! $travelOrder->canCancel()) {
             return response()->json('O pedido de viagem não pode ser cancelado.', 403);
         }
 

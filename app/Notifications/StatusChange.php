@@ -19,11 +19,12 @@ class StatusChange extends Notification
 
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)->subject('O status do seu pedido foi alterado!')
+        return (new MailMessage())->subject('O status do seu pedido foi alterado!')
             ->greeting("Olá {$notifiable->name}")
             ->line(
-                "Tô aqui para te informar que o status do seu pedido de viagem foi alterado para: "
-                    . __("attributes.{$this->travelOrder->status->value}"))
+                'Tô aqui para te informar que o status do seu pedido de viagem foi alterado para: '
+                    .__("attributes.{$this->travelOrder->status->value}"),
+            )
             ->line('Caso tenha alguma dúvida é só entrar em contato por Email. =)')
             ->line('Obrigado por utilizar o Travly.');
     }

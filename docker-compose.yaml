@@ -1,6 +1,8 @@
 volumes:
   mysql-data:
     driver: local
+  mysql-data-test:
+    driver: local
   redis-data:
     driver: local
 
@@ -41,7 +43,7 @@ services:
       MYSQL_PASSWORD: password
       MYSQL_DATABASE: travlydb
     volumes:
-      - mysql-data:/var/lib/mysql  #
+      - mysql-data:/var/lib/mysql
     networks:
       - travly
 

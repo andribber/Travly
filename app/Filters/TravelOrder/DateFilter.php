@@ -13,7 +13,7 @@ class DateFilter implements Filter
         if (isset($value)) {
             $date = Carbon::parse($value)->startOfDay();
 
-            return $query->whereDate($property, '>=', $date);
+            return $query->whereDate($property, $date);
         }
     }
 }

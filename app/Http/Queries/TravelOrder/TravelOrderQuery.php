@@ -19,10 +19,7 @@ class TravelOrderQuery extends QueryBuilder
         $this->allowedIncludes(['user']);
 
         $this->allowedSorts([
-            'id',
-            'destination',
             'departure_date',
-            'return_date',
             AllowedSort::custom('status', new StatusSort()),
         ]);
 

@@ -10,12 +10,16 @@ class DateRangeFilter implements Filter
 {
     public function __invoke(Builder $query, $value, string $property): Builder
     {
-        if (is_array($value) && isset($value['start_date']) && isset($value['end_date'])) {
-            $startDate = Carbon::parse($value['start_date'])->startOfDay();
-            $endDate = Carbon::parse($value['end_date'])->endOfDay();
+        $property = array_key_first($value);
 
-            return $query->whereDate('departure_date', '>=', $startDate)
-                ->whereDate('departure_date', '<=', $endDate);
+        if (is_array($value) && isset($value[$property]['start_date']) && isset($value[$property]['end_date'])) {
+            $startDate = Carbon::parse($value[$property]['start_date'])->startOfDay();
+            $endDate = Carbon::parse($value[$property]['end_date'])->endOfDay();
+
+
+            return $query->whereDate($property, '>=', $startDate)->whereDate($property, '<=', $endDate);
         }
+
+        return $query;
     }
 }
