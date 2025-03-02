@@ -27,7 +27,6 @@ class TravelOrderQuery extends QueryBuilder
         ]);
 
         $this->allowedFilters([
-            AllowedFilter::partial('user.name'),
             AllowedFilter::custom('departure_date', new DateFilter()),
             AllowedFilter::custom('return_date', new DateFilter()),
             AllowedFilter::exact('destination'),

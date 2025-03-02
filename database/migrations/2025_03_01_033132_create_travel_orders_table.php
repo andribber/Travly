@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('travel_orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('destiny', 128);
+            $table->string('destination', 128);
             $table->timestamp('departure_date');
             $table->timestamp('return_date')->nullable();
             $table->string('status', 16);

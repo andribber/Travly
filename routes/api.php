@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\TravelController;
+use App\Http\Controllers\TravelOrderController;
 use App\Http\Controllers\UserController;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
@@ -22,15 +22,15 @@ Route::prefix('v1')->middleware('api')->group(function (Router $router) {
     $router->group(['middleware' => 'auth:api'], function (Router $router) {
         $router->get('/', [UserController::class, 'me'])->name('v1.user.me');
 
-        $router->group(['prefix' => 'travels', 'controller' => TravelController::class], function (Router $router) {
-            $router->get('/', 'index')->name('v1.travels.index');
-            $router->get('/{travel}', 'show')->name('v1.travels.show');
+        $router->group(['prefix' => 'travel-orders', 'controller' => TravelOrderController::class], function (Router $router) {
+            $router->get('/', 'index')->name('v1.travel-orders.index');
+            $router->get('/{travelOrder}', 'show')->name('v1.travel-orders.show');
 
-            $router->post('/', 'store')->name('v1.travels.store');
+            $router->post('/', 'store')->name('v1.travel-orders.store');
 
-            $router->put('/{travel}', 'update')->name('v1.travels.update');
+            $router->put('/{travelOrder}', 'update')->name('v1.travel-orders.update');
 
-            $router->delete('/{travel}', 'delete')->name('v1.travels.delete');
+            $router->delete('/{travelOrder}', 'delete')->name('v1.travel-orders.delete');
         });
     });
 });

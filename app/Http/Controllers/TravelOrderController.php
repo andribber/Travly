@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Routing\Controller;
 
-class TravelController extends Controller
+class TravelOrderController extends Controller
 {
     use AuthorizesRequests;
 
@@ -36,10 +36,9 @@ class TravelController extends Controller
 
     public function show(Request $request, TravelOrderQuery $query, TravelOrder $travelOrder): JsonResource
     {
-        $this->authorize('view', [TravelOrder::class, $travelOrder]);
+        $this->authorize('view', $travelOrder);
 
         return new TravelOrderResource($query->where('id', $travelOrder->id)->first());
-
     }
 
     public function store(StoreRequest $request): JsonResource
@@ -51,7 +50,7 @@ class TravelController extends Controller
 
     public function update(UpdateRequest $request, TravelOrder $travelOrder): JsonResource|JsonResponse
     {
-        $this->authorize('update', [TravelOrder::class, $travelOrder]);
+        $this->authorize('update', $travelOrder);
 
         $status = $request->get('status');
 
