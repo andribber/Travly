@@ -20,8 +20,6 @@ Route::prefix('v1')->middleware('api')->group(function (Router $router) {
     });
 
     $router->group(['middleware' => 'auth:api'], function (Router $router) {
-        $router->get('/', [UserController::class, 'me'])->name('v1.user.me');
-
         $router->group(['prefix' => 'travel-orders', 'controller' => TravelOrderController::class], function (Router $router) {
             $router->get('/', 'index')->name('v1.travel-orders.index');
             $router->get('/{travelOrder}', 'show')->name('v1.travel-orders.show');
@@ -29,8 +27,6 @@ Route::prefix('v1')->middleware('api')->group(function (Router $router) {
             $router->post('/', 'store')->name('v1.travel-orders.store');
 
             $router->put('/{travelOrder}', 'update')->name('v1.travel-orders.update');
-
-            $router->delete('/{travelOrder}', 'delete')->name('v1.travel-orders.delete');
         });
     });
 });

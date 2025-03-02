@@ -1,20 +1,406 @@
-openapi: 3.0.3
+openapi: 3.0.0
 info:
-  title: Basic Sample API
-  description: A simple API to illustrate OpenAPI basics.
-  version: "1.0.0"
+  title: Documentação da API
+  description: API para autenticação de usuários e pedidos de viagens.
+  version: 1.0.0
+  contact:
+    name: André Ribeiro
+    email: andreemanuel2010@gmail.com
+servers:
+  - url: 'http://travly.localhost/v1'
+    description: 'API base URL'
+tags:
+  - name: Autenticação
+    description: Operações de autenticação de usuários
+  - name: Pedidos de Viagens
+    description: Operações sobre pedidos de viagens.
+
 paths:
-  /hello:
-    get:
-      summary: Returns a greeting message.
+  /auth/register:
+    post:
+      tags:
+        - Autenticação
+      summary: Registrar um novo usuário
+      description: Permite que um novo usuário se registre com email e senha.
+      operationId: register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "André Ribeiro"
+                email:
+                  type: string
+                  format: email
+                  example: "usuario@exemplo.com"
+                password:
+                  type: string
+                  format: password
+                  description: A senha deve conter no mínimo 8 caracteres
+                  example: "123456789"
+                password_confirmation:
+                  type: string
+                  format: password
+                  description: A confirmação de senha, deve ser igual a senha original
+                  example: "123456789"
+              required:
+                - name
+                - email
+                - password
+                - password_confirmation
       responses:
-        "200":
-          description: A successful response.
+        '201':
+          description: Usuário registrado com sucesso e autenticado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResource'
+        '400':
+          description: Payload da requisição inválido.
+        '500':
+          description: Erro interno do servidor.
+  /auth/login:
+    post:
+      tags:
+        - Autenticação
+      summary: Login de um usuário
+      description: Autentica um usuário com email e senha, e retorna um token JWT.
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "usuario@exemplo.com"
+                password:
+                  type: string
+                  format: password
+                  example: "senha123"
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: Usuário autenticado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResource'
+        '401':
+          description: Não autorizado - credenciais inválidas.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  message:
+                  error:
                     type: string
-                    example: "Hello, world!"
+                    example: "Não autorizado"
+        '400':
+          description: Payload da requisição inválido.
+        '500':
+          description: Erro interno do servidor.
+  /auth/logout:
+    post:
+      tags:
+        - Autenticação
+      summary: Logout de um usuário
+      description: Desloga o usuário e invalida o token JWT.
+      operationId: logout
+      responses:
+        '204':
+          description: Logout realizado com sucesso.
+        '500':
+          description: Erro interno do servidor.
+  /travel-orders:
+    get:
+      summary: Listar todos os pedidos de viagem
+      description: Retorna uma lista de pedidos de viagem para o usuário autenticado.
+      operationId: index
+      tags:
+        - Pedidos de Viagens
+      parameters:
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            default: 10
+          description: O número de itens a serem retornados por página.
+        - in: query
+          name: include
+          required: false
+          schema:
+            type: string
+          description: "Lista de recursos relacionados a serem incluídos na resposta (`user`)."
+        - in: query
+          name: sort
+          required: false
+          schema:
+            type: string
+          description: "Critérios de ordenação (`departure_date`, `status`). Na ordenação por status, a ordem a ser seguida será Solicitados, Aprovados e Cancelados"
+        - in: query
+          name: filter[departure_date]
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Filtra os resultados pela data de partida.
+        - in: query
+          name: filter[status]
+          required: false
+          schema:
+            type: string
+          description: Filtra os resultados pelo status.
+        - in: query
+          name: filter[return_date]
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Filtra os resultados pela data de retorno.
+        - in: query
+          name: filter[destination]
+          required: false
+          schema:
+            type: string
+          description: Filtra os resultados pelo destino.
+        - in: query
+          name: filter[period]
+          required: false
+          description: Filtra os resultados por um período de tempo, considerando a data de partida ou de volta, apenas um parametro será considerado.
+          schema:
+            type: object
+            properties:
+              departure_date:
+                type: object
+                properties:
+                  start_date:
+                    type: string
+                    format: date
+                  end_date:
+                    type: string
+                    format: date
+              return_date:
+                type: object
+                properties:
+                  start_date:
+                    type: string
+                    format: date
+                  end_date:
+                    type: string
+                    format: date
+      responses:
+        '200':
+          description: Uma lista de pedidos de viagem.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TravelOrderResource'
+                  meta:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      per_page:
+                        type: integer
+                      current_page:
+                        type: integer
+                      last_page:
+                        type: integer
+                      from:
+                        type: integer
+                      to:
+                        type: integer
+              examples:
+                sucesso:
+                  value:
+                    data:
+                      - id: 1
+                        destination: "Paris"
+                        departure_date: "2025-05-01T12:00:00Z"
+                        return_date: "2025-05-15T12:00:00Z"
+                        status: "pendente"
+                        orderer_name: "João Silva"
+                        created_at: "2025-03-01T12:00:00Z"
+                        updated_at: "2025-03-02T12:00:00Z"
+        '401':
+          description: Não autorizado - o usuário não tem permissão para visualizar pedidos de viagem.
+        '500':
+          description: Erro interno do servidor.
+    post:
+      summary: Criar um novo pedido de viagem
+      description: Cria um novo pedido de viagem para o usuário autenticado.
+      operationId: store
+      tags:
+        - Pedidos de Viagens
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                departure_date:
+                  type: string
+                  format: date-time
+                  description: A data de partida do pedido de viagem.
+                return_date:
+                  type: string
+                  format: date-time
+                  description: A data de retorno do pedido de viagem.
+                destination:
+                  type: string
+                  description: O destino do pedido de viagem.
+              required:
+                - departure_date
+                - destination
+      responses:
+        '201':
+          description: O novo pedido de viagem criado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelOrderResource'
+        '400':
+          description: Dados de entrada inválidos.
+
+  /travel-orders/{travelOrder}:
+    get:
+      summary: Obter um pedido de viagem específico
+      description: Retorna os detalhes de um pedido de viagem específico.
+      operationId: show
+      tags:
+        - Pedidos de Viagens
+      parameters:
+        - in: path
+          name: travelOrder
+          required: true
+          schema:
+            type: integer
+          description: O ID do pedido de viagem a ser recuperado.
+      responses:
+        '200':
+          description: O pedido de viagem solicitado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelOrderResource'
+        '404':
+          description: Pedido de viagem não encontrado.
+        '401':
+          description: Não autorizado - o usuário não tem permissão para visualizar este pedido de viagem.
+
+    put:
+      summary: Atualizar um pedido de viagem
+      description: Atualiza as informações de um pedido de viagem existente.
+      operationId: update
+      tags:
+        - Pedidos de Viagens
+      parameters:
+        - in: path
+          name: travelOrder
+          required: true
+          schema:
+            type: integer
+          description: O ID do pedido de viagem a ser atualizado.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: O status do pedido de viagem.
+                  enum:
+                    - "pendente"
+                    - "aprovado"
+                    - "cancelado"
+              required:
+                - status
+      responses:
+        '200':
+          description: O pedido de viagem atualizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelOrderResource'
+        '403':
+          description: O pedido de viagem não pode ser cancelado.
+        '404':
+          description: Pedido de viagem não encontrado.
+        '400':
+          description: Status inválido fornecido.
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+    AuthResource:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID da token gerada
+        expires_at:
+          type: integer
+          description: "Tempo de expiração da Token em timestamp (Padrão: 60 Minutos)"
+        token:
+          type: string
+          description: Token JWT para o usuário autenticado.
+      example:
+        id: "VtWbgBM4eFLZG1rH"
+        expires_at: 1740931096
+        token: "jwt-token-exemplo"
+    TravelOrderResource:
+      type: object
+      properties:
+        id:
+          type: integer
+        destination:
+          type: string
+        departure_date:
+          type: string
+          format: date-time
+        return_date:
+          type: string
+          format: date-time
+          nullable: true
+        status:
+          type: string
+        orderer_name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
