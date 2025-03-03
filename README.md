@@ -48,7 +48,8 @@ O projeto conta com um script de automação para configuração, mas, como todo
 
 2. Execute o container da API e entre no bash:
     ```bash
-    docker compose run api bash
+    docker compose up --build 
+    docker compose exec api bash
     ```
 
 3. Dentro do terminal do container, instale as dependências do sistema:
@@ -70,8 +71,11 @@ O projeto conta com um script de automação para configuração, mas, como todo
     ```bash
     php artisan migrate
     ```
-   (Se desejar adicionar dados de teste ao banco, execute este comando ao invés do outro `php artisan migrate --seed`)
-
+   Se desejar adicionar dados de teste ao banco, execute este comando ao invés do comando acima:
+    ```bash
+    php artisan migrate --seed
+    ```
+   
 7. Pronto! O sistema foi configurado manualmente.
 
 ## Descrição dos Serviços
@@ -102,10 +106,12 @@ A garantia de qualidade e a confiabilidade do sistema foram asseguradas por meio
 
 ### Para executar todos os testes da aplicação, siga os passos abaixo:
 
-1. Execute o comando abaixo para rodar os testes automatizados:
+1. Execute os comando abaixo para rodar os testes automatizados:
 
     ```bash
-    docker compose run api vendor/bin/phpunit tests/
+    docker compose up -d
+    docker compose exec api bash
+    vendor/bin/phpunit tests/
     ```
 
 Este comando irá executar todos os testes da aplicação, garantindo que o sistema esteja funcionando corretamente.
