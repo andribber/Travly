@@ -21,7 +21,7 @@ Caso prefira, no final das instruções de instalação, há um passo a passo pa
 
 1. Clone o repositório do Travly:
     ```bash
-    git clone https://github.com/andribber/Travly.git
+    git clone git@github.com:andribber/Travly.git
     ```
 
 2. Abra um terminal e navegue até o diretório do projeto:
