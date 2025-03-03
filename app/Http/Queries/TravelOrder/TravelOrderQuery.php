@@ -2,10 +2,10 @@
 
 namespace App\Http\Queries\TravelOrder;
 
-use App\Filters\TravelOrder\DateFilter;
-use App\Filters\TravelOrder\DateRangeFilter;
+use App\Http\Filters\TravelOrder\DateFilter;
+use App\Http\Filters\TravelOrder\DateRangeFilter;
+use App\Http\Sorts\TravelOrder\StatusSort;
 use App\Models\TravelOrder;
-use App\Sorts\TravelOrder\StatusSort;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
