@@ -23,20 +23,13 @@ class Setup extends Command
         }
 
         try {
-            $this->info('Installing project dependencies...');
-            exec('composer install', $output, $composerInstallResult);
-
-            if ($composerInstallResult !== 0) {
-                $this->error('Failed to install project dependencies, please do it manually.');
-            }
-
-            $this->info('Generating application key');
+            $this->info('Generating application key...');
             $this->call('key:generate');
 
-            $this->info('Generating JWT secret key');
+            $this->info('Generating JWT secret key...');
             $this->call('jwt:secret', ['--force' => true]);
 
-            $this->info('Running the migrations and seed the database');
+            $this->info('Running the migrations and seed the database...');
             $this->call('migrate:fresh', ['--seed' => true, '--force' => true]);
 
             Cache::put('setup', true);

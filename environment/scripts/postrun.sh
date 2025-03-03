@@ -13,6 +13,9 @@ if [ ! -f /var/www/.env ]; then
   echo ".env copied from .env.example"
 fi
 
+echo "Setting up composer..."
+composer install
+
 echo "Running command to configure project..."
 php artisan project:setup
 
