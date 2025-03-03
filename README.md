@@ -105,7 +105,7 @@ A garantia de qualidade e a confiabilidade do sistema foram asseguradas por meio
 1. Execute o comando abaixo para rodar os testes automatizados:
 
     ```bash
-    docker compose run api /vendor/bin/phpunit tests/
+    docker compose run api vendor/bin/phpunit tests/
     ```
 
 Este comando irá executar todos os testes da aplicação, garantindo que o sistema esteja funcionando corretamente.
