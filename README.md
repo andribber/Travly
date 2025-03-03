@@ -83,7 +83,7 @@ O projeto conta com um script de automação para configuração, mas, como todo
 O Travly é uma API para gerenciamento de pedidos de viagens. Abaixo está uma breve descrição dos principais componentes do sistema:
 
 #### API:
-A API é a hospedagem principal da aplicação, desenvolvida em PHP 8.4 (versão mais recente). Ela está disponível na URL: [http://travly.localhost/v1](http://travly.localhost/v1)
+A API é a hospedagem principal da aplicação, desenvolvida em PHP 8.4 (versão mais recente) e Laravel 12 (versão mais recente). Ela está disponível na URL: [http://travly.localhost/v1](http://travly.localhost/v1)
 
 #### Banco de Dados:
 A API utiliza o MySQL como banco de dados, que pode ser acessado via PhpMyAdmin na URL: `localhost:8080`
