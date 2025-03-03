@@ -113,6 +113,8 @@ paths:
     post:
       tags:
         - Autenticação
+      security:
+        - bearerAuth: [ ]
       summary: Logout de um usuário
       description: Desloga o usuário e invalida o token JWT.
       operationId: logout
@@ -126,6 +128,8 @@ paths:
       summary: Listar todos os pedidos de viagem
       description: Retorna uma lista de pedidos de viagem para o usuário autenticado.
       operationId: index
+      security:
+        - bearerAuth: [ ]
       tags:
         - Pedidos de Viagens
       parameters:
@@ -246,6 +250,8 @@ paths:
       summary: Criar um novo pedido de viagem
       description: Cria um novo pedido de viagem para o usuário autenticado.
       operationId: store
+      security:
+        - bearerAuth: [ ]
       tags:
         - Pedidos de Viagens
       requestBody:
@@ -284,6 +290,8 @@ paths:
       summary: Obter um pedido de viagem específico
       description: Retorna os detalhes de um pedido de viagem específico.
       operationId: show
+      security:
+        - bearerAuth: [ ]
       tags:
         - Pedidos de Viagens
       parameters:
@@ -304,11 +312,12 @@ paths:
           description: Pedido de viagem não encontrado.
         '401':
           description: Não autorizado - o usuário não tem permissão para visualizar este pedido de viagem.
-
     put:
       summary: Atualizar um pedido de viagem
       description: Atualiza as informações de um pedido de viagem existente.
       operationId: update
+      security:
+        - bearerAuth: [ ]
       tags:
         - Pedidos de Viagens
       parameters:
@@ -329,9 +338,8 @@ paths:
                   type: string
                   description: O status do pedido de viagem.
                   enum:
-                    - "pendente"
-                    - "aprovado"
-                    - "cancelado"
+                    - "approved"
+                    - "cancelled"
               required:
                 - status
       responses:

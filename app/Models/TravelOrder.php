@@ -8,10 +8,12 @@ use App\Events\Travel\Updated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TravelOrder extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'id',
