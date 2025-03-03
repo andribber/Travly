@@ -1,0 +1,305 @@
+{
+	"info": {
+		"_postman_id": "2f2d8875-6cbc-47da-a58e-e3df2a4d09b9",
+		"name": "TRAVLY",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19882321"
+	},
+	"item": [
+		{
+			"name": "AUTH",
+			"item": [
+				{
+					"name": "REGISTER",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"André Ribeiro\",\n    \"email\": \"andre@travly.com\",\n    \"password\": \"123456789\",\n    \"password_confirmation\": \"123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://travly.localhost/v1/auth/register",
+							"protocol": "http",
+							"host": [
+								"travly",
+								"localhost"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LOGIN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"andre@travly.com\",\n    \"password\": \"123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://travly.localhost/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"travly",
+								"localhost"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LOGOUT",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vdHJhdmx5LmxvY2FsaG9zdC92MS9hdXRoL3JlZ2lzdGVyIiwiaWF0IjoxNzQwOTI3NDk2LCJleHAiOjE3NDA5MzEwOTYsIm5iZiI6MTc0MDkyNzQ5NiwianRpIjoiVnRXYmdCTTRlRkxaRzFySCIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwidXNlcl9pZCI6Mn0.31aSm3oje1zIH95QyGz3E3hN3KevMRTQEv_ChXplW1o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://travly.localhost/v1/auth/logout",
+							"protocol": "http",
+							"host": [
+								"travly",
+								"localhost"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TRAVEL-ORDER",
+			"item": [
+				{
+					"name": "INDEX",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://travly.localhost/v1/travel-orders",
+							"protocol": "http",
+							"host": [
+								"travly",
+								"localhost"
+							],
+							"path": [
+								"v1",
+								"travel-orders"
+							],
+							"query": [
+								{
+									"key": "filter[name]",
+									"value": "Marcos",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "-departure_date",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SHOW",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://travly.localhost/v1/travel-orders/1",
+							"protocol": "http",
+							"host": [
+								"travly",
+								"localhost"
+							],
+							"path": [
+								"v1",
+								"travel-orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"departure_date\": \"2025-04-18 14:00:00\",\n    \"return_date\": \"2025-04-22 14:00:00\",\n    \"destination\": \"FLORIPA\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://travly.localhost/v1/travel-orders/",
+							"protocol": "http",
+							"host": [
+								"travly",
+								"localhost"
+							],
+							"path": [
+								"v1",
+								"travel-orders",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"approved\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://travly.localhost/v1/travel-orders/1",
+							"protocol": "http",
+							"host": [
+								"travly",
+								"localhost"
+							],
+							"path": [
+								"v1",
+								"travel-orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vdHJhdmx5LmxvY2FsaG9zdC92MS9hdXRoL2xvZ2luIiwiaWF0IjoxNzQwOTI3NTA4LCJleHAiOjE3NDA5MzExMDgsIm5iZiI6MTc0MDkyNzUwOCwianRpIjoiSEpvOXh2Z1BWdHV6Q0loaSIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwidXNlcl9pZCI6Mn0.-hX5_6A4s8b2hhkAG6de4W417puChsGK8PTZCUvEurs",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "PING",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://travly.localhost/v1/ping",
+					"protocol": "http",
+					"host": [
+						"travly",
+						"localhost"
+					],
+					"path": [
+						"v1",
+						"ping"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
