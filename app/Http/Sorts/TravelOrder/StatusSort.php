@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Sorts\TravelOrder;
+namespace App\Http\Sorts\TravelOrder;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;

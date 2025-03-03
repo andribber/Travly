@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filters\TravelOrder;
+namespace App\Http\Filters\TravelOrder;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
